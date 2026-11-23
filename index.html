@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4925434492393378" crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>계산모아 - 대출이자·적금·퇴직금·평수 생활 계산기 모음</title>
+<meta name="description" content="대출이자, 적금 이자, 퇴직금, 전월세 전환, 평수, 만나이까지. 자주 쓰는 생활 계산기를 한 곳에서 무료로 바로 계산하세요.">
+<link rel="canonical" href="https://gsh4124-cyber.github.io/">
+<link rel="stylesheet" href="style.css">
+<script src="common.js"></script>
+</head>
+<body>
+<header></header>
+<main class="wrap">
+  <h1>생활 계산기 모음</h1>
+  <p class="lead">돈, 집, 날짜 계산을 회원가입 없이 바로. 모든 계산은 내 기기 안에서만 처리돼요.</p>
+  <div class="grid" id="list"></div>
+    <section class="card article">
+    <h2>계산모아는 이런 분께 필요해요</h2>
+    <ul>
+      <li>대출받기 전에 매달 갚을 돈이 얼마인지 알고 싶을 때</li>
+      <li>적금 만기에 세금 떼고 실제로 받는 돈이 궁금할 때</li>
+      <li>퇴사 전에 퇴직금을 미리 확인하고 싶을 때</li>
+      <li>전세를 월세로 바꾸면 얼마인지 비교할 때</li>
+    </ul>
+  </section>
+</main>
+<footer></footer>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  document.getElementById("list").innerHTML=CALCS.map(c=>`<a class="tile" href="${c[0]}"><b>${c[1]}</b><small>${c[2]}</small></a>`).join("");
+});
+</script>
+</body>
+</html>
