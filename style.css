@@ -1,11 +1,11 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 :root{
-  --bg:#f3f0e8;--paper:#fffdf8;--ink:#1d1c19;--muted:#6b665c;--faint:#9a9488;--line:#e4ddcf;
-  --accent:#1f6b52;--accent-ink:#fff;--accent-soft:#e3efe8;--warn:#b4532a;
-  --radius:16px;--shadow:0 1px 0 rgba(40,32,16,.04),0 8px 24px -12px rgba(40,32,16,.18);
+  --bg:#f2f4f6;--paper:#ffffff;--ink:#191f28;--muted:#4e5968;--faint:#8b95a1;--line:#e5e8eb;
+  --accent:#3182f6;--accent-ink:#fff;--accent-soft:#e8f3ff;--warn:#f04452;--field:#f2f4f6;
+  --radius:20px;--shadow:0 2px 12px -4px rgba(0,27,55,.08);
 }
 @media (prefers-color-scheme:dark){
-  :root{--bg:#141412;--paper:#1c1c19;--ink:#ecebe6;--muted:#a8a397;--faint:#7c776c;--line:#2f2e2a;--accent:#5fbf97;--accent-ink:#0f1a15;--accent-soft:#1d2b25;--shadow:none}
+  :root{--bg:#101318;--paper:#1b1f26;--ink:#f2f4f6;--muted:#b0b8c1;--faint:#8b95a1;--line:#2c323b;--accent:#4c9bff;--accent-ink:#fff;--accent-soft:#1c2b40;--field:#252a33;--shadow:none}
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -113,3 +113,24 @@ footer a{color:var(--muted)}
   table{font-size:11.5px}
   th,td{padding:6px 4px}
 }
+
+/* white + blue fintech look */
+header{background:color-mix(in srgb,var(--paper) 90%,transparent);border-bottom:1px solid var(--line)}
+.logo::before{border-radius:9px}
+.card{border:0}
+.tile{border:0;box-shadow:var(--shadow)}
+.tile:hover{box-shadow:0 0 0 2px var(--accent)}
+.sym{border-radius:12px}
+.eyebrow{letter-spacing:0;font-weight:700}
+.search input{border:0;background:var(--paper)}
+input,select,textarea{border:1.5px solid transparent;background:var(--field)}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);background:var(--paper);box-shadow:none}
+button{border-radius:14px;font-size:17px}
+.result{background:var(--field)}
+.result::before{display:none}
+.big{color:var(--accent);border-bottom:1px solid var(--line);font-size:clamp(26px,6.5vw,32px)}
+.kv::after{display:none}
+.kv{justify-content:space-between}
+.kv b{color:var(--ink)}
+.group h2{color:var(--ink);font-size:15px}
+footer{background:var(--paper)}
