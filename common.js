@@ -2,9 +2,12 @@
 const SITE = "계산<span>모아</span>";
 // [파일, 이름, 설명, 분류, 기호, 새로 추가 여부]
 const CALCS = [
-  ["yearend.html", "연말정산 계산기", "2025년 귀속 환급금 미리 계산", "money", "환급", 1],
+  ["yearend.html", "연말정산 계산기", "2025년 귀속 환급금 미리 계산", "money", "환급"],
   ["salary.html", "연봉 실수령액 계산기", "2026년 4대보험·소득세 반영", "money", "₩"],
   ["hourly.html", "시급·주휴수당 계산기", "2026 최저시급 10,320원", "money", "시급"],
+  ["unemployment.html", "실업급여 계산기", "하루 금액·받는 기간·총액", "money", "실업", 1],
+  ["parental.html", "육아휴직 급여 계산기", "2026년 달마다 받는 금액", "money", "육휴", 1],
+  ["cartax.html", "자동차세 계산기", "1월 연납 할인·차령 경감", "money", "차세", 1],
   ["severance.html", "퇴직금 계산기", "평균임금 기준 법정 퇴직금", "money", "퇴직"],
   ["loan.html", "대출이자 계산기", "원리금균등·원금균등·만기일시", "money", "대출"],
   ["savings.html", "적금·예금 이자 계산기", "단리/복리, 세후 수령액", "money", "이자"],
@@ -12,12 +15,14 @@ const CALCS = [
   ["broker.html", "중개수수료 계산기", "매매·전세·월세 중개보수", "home", "중개"],
   ["rent.html", "전월세 전환 계산기", "보증금 ↔ 월세 환산", "home", "전월"],
   ["area.html", "평수 계산기", "㎡ ↔ 평 변환", "home", "㎡"],
-  ["holidays-2027.html", "2027년 공휴일 달력", "대체공휴일 7일·연차 꿀팁", "date", "휴일", 1],
+  ["holidays-2027.html", "2027년 공휴일 달력", "대체공휴일 7일·연차 꿀팁", "date", "휴일"],
+  ["discharge.html", "전역일 계산기", "육군·해군·공군·사회복무 D-day", "date", "전역", 1],
   ["dday.html", "날짜·D-day 계산기", "며칠 남았는지, 며칠 후", "date", "D"],
   ["age.html", "만나이 계산기", "만나이·연나이·띠·D-day", "date", "나이"],
   ["leave.html", "연차 계산기", "입사일 기준 연차 일수", "date", "연차"],
   ["percent.html", "퍼센트 계산기", "비율·증감률·%p 계산", "life", "%"],
   ["discount.html", "할인율 계산기", "할인 가격·할인율 역산", "life", "할인"],
+  ["electric.html", "전기요금 계산기", "주택용 누진제·여름철 요금", "life", "kWh", 1],
   ["bmi.html", "BMI 계산기", "체질량지수·비만도", "life", "BMI"],
   ["charcount.html", "글자수 세기", "공백 포함·제외, 바이트", "life", "가A"],
 ];
@@ -62,5 +67,19 @@ function show(id, html) {
   const r = document.getElementById(id);
   r.innerHTML = html;
   r.classList.add("show");
-  if (r.getBoundingClientRect().top > innerHeight - 120) r.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (!window.QUIET && r.getBoundingClientRect().top > innerHeight - 120) r.scrollIntoView({ behavior: "smooth", block: "start" });
 }
+
+// 쉬운 입력: 선택 버튼(chips)과 입력하면 바로 계산
+const chip = id => { const b = document.querySelector("#" + id + " [aria-pressed=true]"); return b ? b.dataset.v : null; };
+document.addEventListener("click", e => {
+  const b = e.target.closest(".chips button"); if (!b) return;
+  b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  if (document.body.dataset.live && window.calc) { window.QUIET = true; calc(); window.QUIET = false; }
+});
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.body.dataset.live || !window.calc) return;
+  const run = () => { window.QUIET = true; calc(); window.QUIET = false; };
+  document.querySelectorAll("main input, main select").forEach(el => el.addEventListener("input", run));
+  run();
+});
