@@ -35,6 +35,7 @@
       <li>장기요양보험: 건강보험료의 13.14%</li>
       <li>고용보험 0.9%</li>
     </ul>
+    <p><a href="salary-table.html">연봉 2천만~1억 실수령액 표 보기 →</a></p>
     <h2>소득세는 어떻게 계산하나요?</h2>
     <p>연간 급여에서 근로소득공제, 인적공제, 보험료 공제를 빼서 과세표준을 구하고, 기본세율(6~45%)을 적용한 뒤 근로소득세액공제와 표준세액공제를 빼서 계산해요. 지방소득세는 소득세의 10%예요.</p>
     <p>회사가 매달 떼는 소득세는 국세청 간이세액표를 따르기 때문에 이 계산과 조금 다를 수 있어요. 그 차이는 연말정산에서 정산돼요. 자녀세액공제, 의료비·교육비 공제 같은 개인별 공제는 반영하지 않았어요.</p>
@@ -44,6 +45,7 @@
 </main>
 <footer></footer>
 <script>
+document.addEventListener("DOMContentLoaded",()=>{const y=new URLSearchParams(location.search).get("y");if(y&&/^\d+$/.test(y))document.getElementById("y").value=Number(y).toLocaleString("ko-KR");});
 const RATE={np:0.0475,npMax:6590000,npMin:410000,hi:0.03595,ltc:0.1314,ei:0.009};
 function earnDed(g){ // 근로소득공제
   let d; if(g<=5e6)d=g*0.7; else if(g<=15e6)d=3.5e6+(g-5e6)*0.4; else if(g<=45e6)d=7.5e6+(g-15e6)*0.15; else if(g<=1e8)d=12e6+(g-45e6)*0.05; else d=14.75e6+(g-1e8)*0.02;
