@@ -75,11 +75,20 @@ const chip = id => { const b = document.querySelector("#" + id + " [aria-pressed
 document.addEventListener("click", e => {
   const b = e.target.closest(".chips button"); if (!b) return;
   b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
-  if (document.body.dataset.live && window.calc) { window.QUIET = true; calc(); window.QUIET = false; }
+  if (document.body.dataset.live && window.calc) { const a = window.alert; window.alert = () => {}; window.QUIET = true; try { calc(); } catch (e) {} window.QUIET = false; window.alert = a; }
 });
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.body.dataset.live || !window.calc) return;
-  const run = () => { window.QUIET = true; calc(); window.QUIET = false; };
+  document.querySelectorAll("main select").forEach(sel => {
+    if (sel.options.length > 5) return;
+    const box = document.createElement("div"); box.className = "chips"; box.id = sel.id + "-chips";
+    [...sel.options].forEach(o => { const b = document.createElement("button"); b.type = "button"; b.dataset.v = o.value; b.textContent = o.textContent;
+      b.setAttribute("aria-pressed", o.value === sel.value);
+      b.addEventListener("click", () => { sel.value = o.value; sel.dispatchEvent(new Event("change")); }); box.append(b); });
+    sel.hidden = true; sel.after(box);
+  });
+  const run = () => { const a = window.alert; window.alert = () => {}; window.QUIET = true; try { calc(); } catch (e) {} window.QUIET = false; window.alert = a; };
+  document.querySelectorAll("main select").forEach(el => el.addEventListener("change", run));
   document.querySelectorAll("main input, main select").forEach(el => el.addEventListener("input", run));
-  run();
+  setTimeout(run, 0);
 });

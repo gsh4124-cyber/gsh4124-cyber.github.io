@@ -142,3 +142,8 @@ footer{background:var(--paper)}
 .chips button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .hint{font-size:13px;color:var(--faint);margin:6px 0 10px;line-height:1.5}
 #ccq,#kq{margin-top:2px}
+details.more-in{margin-top:18px;border:1px solid var(--line);border-radius:14px;padding:4px 16px 12px}
+details.more-in>summary{cursor:pointer;font-weight:700;color:var(--accent);padding:10px 0 2px;list-style:none}
+details.more-in>summary::-webkit-details-marker{display:none}
+details.more-in>summary::before{content:"+ ";font-weight:800}
+details.more-in[open]>summary::before{content:"− "}
