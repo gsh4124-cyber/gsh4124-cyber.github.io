@@ -10,7 +10,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "대출이자 계산기", "url": "https://gsh4124-cyber.github.io/loan.html", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "inLanguage": "ko", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "원리금균등과 원금균등 중 무엇이 유리한가요?", "acceptedAnswer": {"@type": "Answer", "text": "원금균등은 처음 상환액이 크지만 원금이 빨리 줄어 총이자가 적어요. 원리금균등은 매달 같은 금액이라 계획 세우기가 쉬워요. 초반 부담을 감당할 수 있으면 원금균등이 이자 면에서 유리해요."}}, {"@type": "Question", "name": "만기일시상환은 어떤 방식인가요?", "acceptedAnswer": {"@type": "Answer", "text": "매달 이자만 내다가 만기에 원금 전체를 한 번에 갚는 방식이에요. 월 부담은 가장 적지만 총이자는 가장 많아요."}}, {"@type": "Question", "name": "중도상환수수료도 계산되나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 중도상환수수료, 보증료, 인지세 같은 부대비용은 포함하지 않았어요. 대출 상품 설명서에서 따로 확인하세요."}}]}</script>
 <link rel="stylesheet" href="style.css?v=7">
-<script src="common.js?v=7"></script>
+<script src="common.js?v=8"></script>
 </head>
 <body data-live="1">
 <header></header>
@@ -21,8 +21,8 @@
     <label for="p">대출 금액 (원)</label>
     <input id="p" class="money" value="100,000,000">
     <div class="row">
-      <div><label for="r">연 금리 (%)</label><input id="r" type="number" step="0.01" value="4.5"></div>
-      <div><label for="n">대출 기간 (개월)</label><input id="n" type="number" value="360"></div>
+      <div><label for="r">연 금리 (%)</label><input id="r" type="number" min="0" step="0.01" value="4.5"></div>
+      <div><label for="n">대출 기간 (개월)</label><input id="n" type="number" min="1" max="1200" value="360"></div>
     </div>
     <label for="m">상환 방식</label>
     <select id="m">
@@ -50,7 +50,7 @@ function calc(){
   const P=num("p"), R=num("r")/100/12, N=Math.round(num("n")), M=document.getElementById("m").value;
   if(!P||N<1){alert("대출 금액과 기간을 입력해 주세요.");return;}
   let bal=P, rows=[], total=0, first=0, last=0;
-  const pmt = R===0 ? P/N : P*R*Math.pow(1+R,N)/(Math.pow(1+R,N)-1);
+  const pmt = R===0 ? P/N : P*R/(-Math.expm1(-N*Math.log1p(R)));
   for(let i=1;i<=N;i++){
     const it=bal*R; let pr;
     if(M==="eq") pr=pmt-it; else if(M==="pr") pr=P/N; else pr=(i===N?bal:0);
