@@ -66,9 +66,30 @@ const kv = (k, v) => `<div class="kv"><span>${k}</span><b>${v}</b></div>`;
 function show(id, html) {
   const r = document.getElementById(id);
   r.innerHTML = html;
+  r.dataset.state = "ready"; r.setAttribute("role", "status");
   r.classList.add("show");
   if (!window.QUIET && r.getBoundingClientRect().top > innerHeight - 120) r.scrollIntoView({ behavior: "smooth", block: "start" });
 }
+
+// Never leave an old answer visible after an invalid or cleared input.
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof window.calc !== "function") return;
+  const calculate=window.calc;
+  window.calc=function(...args){
+    const out=document.getElementById("out");
+    const status=message=>{if(!out)return;const p=document.createElement("p");p.textContent=message;out.replaceChildren(p);out.dataset.state="invalid";out.setAttribute("role","status");out.classList.add("show");};
+    const fields=[...document.querySelectorAll("main input")].filter(el=>el.getClientRects().length&&!['checkbox','radio','button','submit'].includes(el.type));
+    for(const field of fields){
+      const raw=String(field.value).replace(/,/g,"").trim(),numeric=field.type==='number'||field.classList.contains('money');
+      if((field.validity?.badInput)||(raw&&numeric&&(!Number.isFinite(Number(raw))||Math.abs(Number(raw))>Number.MAX_SAFE_INTEGER))||(raw&&typeof field.checkValidity==='function'&&!field.checkValidity())){status("입력 범위를 확인해 주세요.");return;}
+    }
+    if(out){out.replaceChildren();out.dataset.state="pending";}
+    const previousAlert=window.alert;let message='';window.alert=text=>{message=String(text);};
+    try{const result=calculate.apply(this,args);if(message)status(message);else if(out&&!out.innerHTML.trim())status("계산할 값을 입력해 주세요.");else if(out&&/NaN|Infinity|∞|undefined/.test(out.textContent))status("계산할 수 있는 범위의 값을 입력해 주세요.");return result;}
+    catch{status("입력값을 확인한 뒤 다시 계산해 주세요.");}
+    finally{window.alert=previousAlert;}
+  };
+});
 
 // 쉬운 입력: 선택 버튼(chips)과 입력하면 바로 계산
 const chip = id => { const b = document.querySelector("#" + id + " [aria-pressed=true]"); return b ? b.dataset.v : null; };
