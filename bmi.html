@@ -10,7 +10,7 @@
 <meta property="og:title" content="BMI 계산기 - 키·몸무게로 체질량지수와 비만도 확인 | 계산모아"><meta property="og:description" content="키와 몸무게를 입력하면 BMI(체질량지수)와 대한비만학회 기준 비만도, 정상 체중 범위를 알려 드려요."><meta property="og:url" content="https://gsh4124-cyber.github.io/bmi.html"><meta property="og:type" content="website"><meta property="og:locale" content="ko_KR">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "BMI 계산기", "url": "https://gsh4124-cyber.github.io/bmi.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "inLanguage": "ko", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "어린이도 같은 기준인가요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 만 18세 이하는 성장 단계가 달라 나이·성별별 BMI 백분위로 판단해요."}}, {"@type": "Question", "name": "세계보건기구(WHO) 기준과 다른가요?", "acceptedAnswer": {"@type": "Answer", "text": "WHO는 25 이상을 과체중으로 보지만, 아시아인 기준을 따르는 대한비만학회는 23부터 비만 전단계로 봐요."}}]}</script>
 <link rel="stylesheet" href="style.css?v=7">
-<script src="common.js?v=7"></script>
+<script src="common.js?v=8"></script>
 </head>
 <body data-live="1">
 <header></header>
@@ -18,7 +18,7 @@
   <h1>BMI 계산기</h1>
   <p class="lead">키와 몸무게만 넣으면 체질량지수와 정상 체중 범위를 보여 줘요.</p>
   <div class="card">
-    <div class="row"><div><label for="h">키 (cm)</label><input id="h" type="number" step="any" value="170"></div><div><label for="w">몸무게 (kg)</label><input id="w" type="number" step="any" value="65"></div></div>
+    <div class="row"><div><label for="h">키 (cm)</label><input id="h" type="number" min="0.01" step="any" value="170"></div><div><label for="w">몸무게 (kg)</label><input id="w" type="number" min="0.01" step="any" value="65"></div></div>
     <button onclick="calc()">계산하기</button><div class="result" id="out"></div>
   </div>
     <section class="card article">
