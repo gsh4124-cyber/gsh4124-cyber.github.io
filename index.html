@@ -80,9 +80,17 @@
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
   const list=document.getElementById("list"),q=document.getElementById("q");
+  const aliases = {
+    "salary.html": ["세후 월급", "세후 연봉", "월급 실수령액", "월 실수령액"],
+    "area.html": ["제곱미터", "m²", "m2", "평수 변환"],
+    "electric.html": ["전기세", "전기료"]
+  };
+  const normalize = text => text.toLowerCase().replace(/\s+/g, "");
   function render(){
-    const t=q.value.trim().toLowerCase().replace(/\s+/g,"");
-    const hit=c=>!t||(c[1]+c[2]).toLowerCase().replace(/\s+/g,"").includes(t);
+    const term = normalize(q.value);
+    const hit = ([file, name, description]) => !term
+      || normalize(name + description).includes(term)
+      || (aliases[file] ?? []).some(alias => normalize(alias + " 계산기").includes(term));
     const html=GROUPS.map(([k,name])=>{const items=CALCS.filter(c=>c[3]===k&&hit(c));return items.length?`<section class="group"><h2>${name}</h2><div class="grid">${items.map(tileHTML).join("")}</div></section>`:"";}).join("");
     list.innerHTML=html||`<p class="empty">찾는 계산기가 없어요. <a href="contact.html">필요한 계산기를 알려 주세요</a>.</p>`;
   }
