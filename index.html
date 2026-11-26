@@ -19,8 +19,52 @@
     <h1>돈 계산, 여기서 한 번에</h1>
     <p class="lead">연봉 실수령액부터 연말정산, 대출이자, 평수까지. 자주 쓰는 생활 계산기와 2027년 공휴일 달력을 모았어요.</p>
   </div>
-  <div class="search"><input id="q" type="search" placeholder="어떤 계산이 필요하세요? 예: 퇴직금, 월세, 평수" aria-label="계산기 검색" autocomplete="off"></div>
-  <div id="list"></div>
+  <div class="search" hidden><input id="q" type="search" placeholder="어떤 계산이 필요하세요? 예: 퇴직금, 월세, 평수" aria-label="계산기 검색" autocomplete="off"></div>
+  <div id="list">
+    <section class="group">
+      <h2>돈·세금</h2>
+      <div class="grid">
+        <a class="tile" href="yearend.html"><span class="sym">환급</span><span><b>연말정산 계산기</b><small>2025년 귀속 환급금 미리 계산</small></span></a>
+        <a class="tile" href="salary.html"><span class="sym">₩</span><span><b>연봉 실수령액 계산기</b><small>2026년 4대보험·소득세 반영</small></span></a>
+        <a class="tile" href="hourly.html"><span class="sym">시급</span><span><b>시급·주휴수당 계산기</b><small>2026 최저시급 10,320원</small></span></a>
+        <a class="tile new" href="unemployment.html"><span class="sym">실업</span><span><b>실업급여 계산기</b><small>하루 금액·받는 기간·총액</small></span></a>
+        <a class="tile new" href="parental.html"><span class="sym">육휴</span><span><b>육아휴직 급여 계산기</b><small>2026년 달마다 받는 금액</small></span></a>
+        <a class="tile new" href="cartax.html"><span class="sym">차세</span><span><b>자동차세 계산기</b><small>1월 연납 할인·차령 경감</small></span></a>
+        <a class="tile" href="severance.html"><span class="sym">퇴직</span><span><b>퇴직금 계산기</b><small>평균임금 기준 법정 퇴직금</small></span></a>
+        <a class="tile" href="loan.html"><span class="sym">대출</span><span><b>대출이자 계산기</b><small>원리금균등·원금균등·만기일시</small></span></a>
+        <a class="tile" href="savings.html"><span class="sym">이자</span><span><b>적금·예금 이자 계산기</b><small>단리/복리, 세후 수령액</small></span></a>
+        <a class="tile" href="vat.html"><span class="sym">VAT</span><span><b>부가세 계산기</b><small>공급가액 ↔ 합계금액</small></span></a>
+      </div>
+    </section>
+    <section class="group">
+      <h2>집·부동산</h2>
+      <div class="grid">
+        <a class="tile" href="broker.html"><span class="sym">중개</span><span><b>중개수수료 계산기</b><small>매매·전세·월세 중개보수</small></span></a>
+        <a class="tile" href="rent.html"><span class="sym">전월</span><span><b>전월세 전환 계산기</b><small>보증금 ↔ 월세 환산</small></span></a>
+        <a class="tile" href="area.html"><span class="sym">㎡</span><span><b>평수 계산기</b><small>㎡ ↔ 평 변환</small></span></a>
+      </div>
+    </section>
+    <section class="group">
+      <h2>날짜·근무</h2>
+      <div class="grid">
+        <a class="tile" href="holidays-2027.html"><span class="sym">휴일</span><span><b>2027년 공휴일 달력</b><small>대체공휴일 7일·연차 꿀팁</small></span></a>
+        <a class="tile new" href="discharge.html"><span class="sym">전역</span><span><b>전역일 계산기</b><small>육군·해군·공군·사회복무 D-day</small></span></a>
+        <a class="tile" href="dday.html"><span class="sym">D</span><span><b>날짜·D-day 계산기</b><small>며칠 남았는지, 며칠 후</small></span></a>
+        <a class="tile" href="age.html"><span class="sym">나이</span><span><b>만나이 계산기</b><small>만나이·연나이·띠·D-day</small></span></a>
+        <a class="tile" href="leave.html"><span class="sym">연차</span><span><b>연차 계산기</b><small>입사일 기준 연차 일수</small></span></a>
+      </div>
+    </section>
+    <section class="group">
+      <h2>생활</h2>
+      <div class="grid">
+        <a class="tile" href="percent.html"><span class="sym">%</span><span><b>퍼센트 계산기</b><small>비율·증감률·%p 계산</small></span></a>
+        <a class="tile" href="discount.html"><span class="sym">할인</span><span><b>할인율 계산기</b><small>할인 가격·할인율 역산</small></span></a>
+        <a class="tile new" href="electric.html"><span class="sym">kWh</span><span><b>전기요금 계산기</b><small>주택용 누진제·여름철 요금</small></span></a>
+        <a class="tile" href="bmi.html"><span class="sym">BMI</span><span><b>BMI 계산기</b><small>체질량지수·비만도</small></span></a>
+        <a class="tile" href="charcount.html"><span class="sym">가A</span><span><b>글자수 세기</b><small>공백 포함·제외, 바이트</small></span></a>
+      </div>
+    </section>
+  </div>
   <section class="card article">
     <h2>계산모아는 이런 분께 필요해요</h2>
     <ul>
@@ -42,7 +86,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     const html=GROUPS.map(([k,name])=>{const items=CALCS.filter(c=>c[3]===k&&hit(c));return items.length?`<section class="group"><h2>${name}</h2><div class="grid">${items.map(tileHTML).join("")}</div></section>`:"";}).join("");
     list.innerHTML=html||`<p class="empty">찾는 계산기가 없어요. <a href="contact.html">필요한 계산기를 알려 주세요</a>.</p>`;
   }
-  q.addEventListener("input",render);render();
+  q.parentElement.hidden=false;
+  q.addEventListener("input",render);
+  if(q.value)render();
 });
 </script>
 </body>
