@@ -113,3 +113,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("main input, main select").forEach(el => el.addEventListener("input", run));
   setTimeout(run, 0);
 });
+
+// Anonymous page and performance counts; never read form fields or storage.
+(() => {
+  const url = new URL(location.href);
+  if (url.hostname !== "gsh4124-cyber.github.io" || navigator.webdriver || /Headless|Playwright/i.test(navigator.userAgent)
+      || url.searchParams.has("qa") || url.searchParams.has("code") || url.searchParams.has("access_token")
+      || /(?:access_token|refresh_token|type=recovery)=/i.test(url.hash)
+      || document.querySelector("script[data-cf-beacon]")) return;
+  const script = document.createElement("script");
+  script.type = "module";
+  script.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  script.dataset.cfBeacon = JSON.stringify({token: "d1433507636b435ca9e8f0270af818ef", spa: false});
+  document.head.append(script);
+})();
