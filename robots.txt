@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /proof/
 Allow: /
 
 Sitemap: https://gsh4124-cyber.github.io/sitemap.xml
