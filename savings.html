@@ -9,8 +9,8 @@
 <link rel="canonical" href="https://gsh4124-cyber.github.io/savings.html">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "적금·예금 이자 계산기", "url": "https://gsh4124-cyber.github.io/savings.html", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "inLanguage": "ko", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "예금과 적금 중 무엇이 이자를 더 받나요?", "acceptedAnswer": {"@type": "Answer", "text": "같은 금리라면 목돈을 한 번에 넣는 예금이 이자를 더 받아요. 적금은 나중에 넣은 돈일수록 이자 붙는 기간이 짧기 때문이에요."}}, {"@type": "Question", "name": "만기 전에 해지하면 어떻게 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "중도해지 이율이 적용돼 약정 금리보다 훨씬 낮은 이자를 받아요. 해지 이율은 상품마다 다르니 가입 전에 확인하세요."}}, {"@type": "Question", "name": "세금을 덜 내는 방법이 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "비과세종합저축(만 65세 이상 등 대상 제한)이나 조합 예탁금 같은 세금우대 상품을 쓰면 15.4%보다 낮은 세율이 적용돼요. 가입 요건은 금융기관에서 확인하세요."}}]}</script>
-<link rel="stylesheet" href="style.css?v=8">
-<script src="common.js?v=8"></script>
+<link rel="stylesheet" href="style.css?v=9">
+<script src="common.js?v=9"></script>
 <script src="rec.js?v=1" defer></script>
 </head>
 <body data-live="1">
@@ -26,8 +26,8 @@
     <label for="a" id="al">월 납입액 (원)</label>
     <input id="a" class="money" value="500,000">
     <div class="row">
-      <div><label for="r">연 이율 (%)</label><input id="r" type="number" step="0.01" value="3.5"></div>
-      <div><label for="n">기간 (개월)</label><input id="n" type="number" value="12"></div>
+      <div><label for="r">연 이율 (%)</label><input id="r" type="number" min="0" step="0.01" value="3.5"></div>
+      <div><label for="n">기간 (개월)</label><input id="n" type="number" min="1" max="1200" value="12"></div>
     </div>
     <label for="x">이자 과세</label>
     <select id="x"><option value="0.154">일반과세 15.4%</option><option value="0.095">세금우대 9.5%</option><option value="0">비과세 0%</option></select>
