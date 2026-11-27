@@ -21,7 +21,7 @@
   <div class="card">
     <label>어떤 차인가요?</label>
     <div class="chips" id="kind" role="group"><button type="button" data-v="gas" aria-pressed="true">휘발유·경유·LPG·하이브리드</button><button type="button" data-v="ev" aria-pressed="false">전기차·수소차</button></div>
-    <div id="ccbox"><label for="cc">배기량 (cc)</label><input id="cc" type="number" inputmode="numeric" value="1598">
+    <div id="ccbox"><label for="cc">배기량 (cc)</label><input id="cc" type="number" min="1" inputmode="numeric" value="1598">
     <p class="hint">자동차등록증의 ‘배기량’ 칸에 있어요. 모르면 아래에서 골라도 돼요.</p>
     <div class="chips" id="ccq" role="group"><button type="button" data-v="998" aria-pressed="false">경차 1,000cc</button><button type="button" data-v="1598" aria-pressed="true">소형 1,600cc</button><button type="button" data-v="1999" aria-pressed="false">중형 2,000cc</button><button type="button" data-v="2497" aria-pressed="false">대형 2,500cc</button><button type="button" data-v="3342" aria-pressed="false">3,300cc 이상</button></div></div>
     <label for="year">처음 등록한 해</label><select id="year"><option value="2027">2027년</option><option value="2026">2026년</option><option value="2025">2025년</option><option value="2024">2024년</option><option value="2023">2023년</option><option value="2022" selected>2022년</option><option value="2021">2021년</option><option value="2020">2020년</option><option value="2019">2019년</option><option value="2018">2018년</option><option value="2017">2017년</option><option value="2016">2016년</option><option value="2015">2015년 이전</option></select>
@@ -47,13 +47,17 @@
 <script>
 LIVE=1;
 const RATE=cc=>cc<=1000?80:cc<=1600?140:200;
-function calc(force){const ev=chip("kind")==="ev";document.getElementById("ccbox").style.display=ev?"none":"";
+function calc(force){const ev=chip("kind")==="ev";
 const cc=Number(document.getElementById("cc").value)||0,yr=Number(document.getElementById("year").value),days=Number(chip("when"));
 if(!ev&&!cc){if(force)alert("배기량을 넣어 주세요.");return;}
 const age=2027-yr+1,cut=ev?0:(age>=3?Math.min((age-2)*5,50):0);
 const base=ev?100000:Math.floor(cc*RATE(cc)*(100-cut)/100/10)*10;const edu=Math.floor(base*0.3/10)*10;const total=base+edu;
 const disc=Math.floor(total*0.05*days/365/10)*10;
 show("out",`<div class="big">${days?`연납하면 ${won(total-disc)}`:`1년 ${won(total)}`}</div>${kv("1년 자동차세 (교육세 포함)",won(total))}${kv("6월·12월에 낼 돈",won(total/2)+"씩")}${days?kv("연납으로 아끼는 돈",won(disc)):""}${!ev?kv("차령 경감",cut?`${age}년째 차 · ${cut}% 할인`:"아직 없음 (3년째부터)"):""}<p style="font-size:13px;color:var(--muted)">2027년 1월 기준 예상액이에요. 연납 공제율은 2026년 기준(5%)으로 계산했어요.</p>`);}
+document.getElementById("kind").addEventListener("click", event => {
+  const button = event.target.closest("button[data-v]");
+  if (button) document.getElementById("ccbox").hidden = button.dataset.v === "ev";
+});
 document.addEventListener("click",ev=>{const b=ev.target.closest("#ccq button");if(b){document.getElementById("cc").value=b.dataset.v;calc();}});
 </script>
 </body>

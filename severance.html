@@ -48,7 +48,12 @@ function calc(){
   const s=new Date(document.getElementById("s").value), e=new Date(document.getElementById("e").value);
   if(isNaN(s)||isNaN(e)||e<=s){alert("입사일과 퇴직일을 확인해 주세요.");return;}
   const days=Math.round((e-s)/D);
-  const p=new Date(e); p.setMonth(p.getMonth()-3);
+  // 고용노동부 계산기와 같이 해당 일이 없으면 다음 달 1일부터 센다.
+  const p = new Date(e);
+  p.setUTCMonth(e.getUTCMonth() - 3, 1);
+  const last = new Date(p);
+  last.setUTCMonth(p.getUTCMonth() + 1, 0);
+  p.setUTCDate(Math.min(e.getUTCDate(), last.getUTCDate() + 1));
   const pdays=Math.round((e-p)/D);
   const wage=num("w")+num("b")*3/12+num("v")*3/12;
   const avg=wage/pdays;

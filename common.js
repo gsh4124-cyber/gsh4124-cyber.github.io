@@ -47,16 +47,25 @@ document.addEventListener("DOMContentLoaded", () => {
     more.innerHTML = `<h2 style="margin:0 0 12px">다른 계산기</h2><div class="grid">${[...same, ...rest].slice(0, 8).map(tileHTML).join("")}</div>
       <p style="margin:12px 0 0;font-size:14px"><a href="./">계산기 ${CALCS.length}개 전체 보기 →</a></p>`;
   }
-  // 금액 입력칸 콤마 자동
+  // 정상 금액만 쉼표를 넣고, 잘못된 입력은 검증할 수 있게 그대로 둔다.
   document.querySelectorAll("input.money").forEach(el => {
     el.setAttribute("inputmode", "numeric");
-    el.addEventListener("input", () => {
-      const v = el.value.replace(/[^0-9]/g, "");
-      el.value = v ? Number(v).toLocaleString("ko-KR") : "";
+    let previous = el.value.trim();
+    el.addEventListener("input", event => {
+      const raw = el.value.trim();
+      const digits = raw.replace(/,/g, "");
+      const editingDigits = MONEY_AMOUNT.test(previous) &&
+        (event.inputType?.startsWith("delete") || (event.inputType === "insertText" && /^\d$/.test(event.data ?? "")));
+      if ((MONEY_AMOUNT.test(raw) || (editingDigits && /^\d+$/.test(digits))) &&
+          Number.isSafeInteger(Number(digits))) {
+        el.value = Number(digits).toLocaleString("ko-KR");
+      }
+      previous = el.value.trim();
     });
   });
 });
 
+const MONEY_AMOUNT = /^(?:\d+|\d{1,3}(?:,\d{3})+)$/;
 const num = id => {
   const el = document.getElementById(id);
   return Number(String(el.value).replace(/,/g, "")) || 0;
@@ -78,9 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
   window.calc=function(...args){
     const out=document.getElementById("out");
     const status=message=>{if(!out)return;const p=document.createElement("p");p.textContent=message;out.replaceChildren(p);out.dataset.state="invalid";out.setAttribute("role","status");out.classList.add("show");};
-    const fields=[...document.querySelectorAll("main input")].filter(el=>el.getClientRects().length&&!['checkbox','radio','button','submit'].includes(el.type));
+    const fields = [...document.querySelectorAll("main input")].filter(field =>
+      !field.disabled && !["checkbox", "radio", "button", "submit"].includes(field.type) &&
+      (field.getClientRects().length || field.closest("details:not([open])")?.getClientRects().length));
     for(const field of fields){
-      const raw=String(field.value).replace(/,/g,"").trim(),numeric=field.type==='number'||field.classList.contains('money');
+      const value = field.value.trim();
+      const isMoney = field.classList.contains("money");
+      if (isMoney && value && !MONEY_AMOUNT.test(value)) {
+        status("입력 금액은 0 이상의 정수로 입력해 주세요.");
+        return;
+      }
+      const raw = isMoney ? value.replace(/,/g, "") : value;
+      const numeric = field.type === "number" || isMoney;
       if((field.validity?.badInput)||(raw&&numeric&&(!Number.isFinite(Number(raw))||Math.abs(Number(raw))>Number.MAX_SAFE_INTEGER))||(raw&&typeof field.checkValidity==='function'&&!field.checkValidity())){status("입력 범위를 확인해 주세요.");return;}
     }
     if(out){out.replaceChildren();out.dataset.state="pending";}

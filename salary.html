@@ -64,7 +64,9 @@ function earnCredit(tax,g){
 function calc(){
   const Y=num("y"), NT=num("nt"), F=Math.max(1,Math.round(num("f")));
   if(!Y){alert("연봉을 입력해 주세요.");return;}
-  const month=Y/12, taxable=Math.max(month-NT,0);
+  const month = Y / 12;
+  if (NT > month) { alert("월 비과세액은 월 세전 급여를 넘을 수 없어요."); return; }
+  const taxable = month - NT;
   const np=Math.floor(Math.min(Math.max(taxable,RATE.npMin),RATE.npMax)*RATE.np/10)*10;
   const hi=Math.floor(taxable*RATE.hi/10)*10;
   const ltc=Math.floor(hi*RATE.ltc/10)*10;

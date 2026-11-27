@@ -32,7 +32,7 @@
       <label for="wb">월세 보증금 (원)</label><input id="wb" class="money" value="50,000,000">
       <label for="wm">월세 (원)</label><input id="wm" class="money" value="1,000,000">
     </div>
-    <label for="r">전월세 전환율 (연 %)</label><input id="r" type="number" step="0.1" value="4.5">
+    <label for="r">전월세 전환율 (연 %)</label><input id="r" type="number" min="0" step="0.1" value="4.5">
     <button onclick="calc()">계산하기</button>
     <div class="result" id="out"></div>
   </div>

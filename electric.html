@@ -19,7 +19,7 @@
   <h1>전기요금 계산기</h1>
   <p class="lead">고지서에 있는 한 달 사용량만 넣으면 전기요금이 얼마 나올지 계산해요.</p>
   <div class="card">
-    <label for="kwh">한 달 사용량 (kWh)</label><input id="kwh" type="number" inputmode="numeric" value="300">
+    <label for="kwh">한 달 사용량 (kWh)</label><input id="kwh" type="number" min="0" inputmode="numeric" value="300">
     <p class="hint">전기요금 고지서나 한전ON 앱의 ‘사용량’이에요. 보통 1~2인 가구 200~300, 4인 가구 350~450쯤이에요.</p>
     <div class="chips" id="kq" role="group"><button type="button" data-v="200" aria-pressed="false">200</button><button type="button" data-v="300" aria-pressed="true">300</button><button type="button" data-v="400" aria-pressed="false">400</button><button type="button" data-v="500" aria-pressed="false">500</button></div>
     <label>언제 쓴 전기인가요?</label>
