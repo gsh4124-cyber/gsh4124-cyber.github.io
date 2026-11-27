@@ -88,13 +88,20 @@ document.addEventListener("DOMContentLoaded",()=>{
     "dday.html": ["디데이"],
     "electric.html": ["전기세", "전기료"]
   };
-  const normalize = text => text.toLowerCase().replace(/\s+/g, "");
+  const normalize = text => text.normalize("NFKC").toLowerCase().replace(/\s+/g, "");
+  const matches = (term, [file, name, description]) => normalize(name + description).includes(term)
+    || (aliases[file] ?? []).some(alias => normalize(alias + " 계산기").includes(term));
   function render(){
-    const term = normalize(q.value);
-    const hit = ([file, name, description]) => !term
-      || normalize(name + description).includes(term)
-      || (aliases[file] ?? []).some(alias => normalize(alias + " 계산기").includes(term));
-    const html=GROUPS.map(([k,name])=>{const items=CALCS.filter(c=>c[3]===k&&hit(c));return items.length?`<section class="group"><h2>${name}</h2><div class="grid">${items.map(tileHTML).join("")}</div></section>`:"";}).join("");
+    const search = q.value.normalize("NFKC").toLowerCase();
+    const term = normalize(search);
+    let results = CALCS.filter(calc => matches(term, calc));
+    if (!results.length) {
+      const hasArea = /\d\s*(?:제곱\s*미터|m2(?!\d)|평(?=$|[\s?!.,은는이가을를대형]))/.test(search);
+      const withoutAmount = normalize(search.replace(/\d[\d,.]*\s*(?:만\s*원|천\s*원|원|kwh)/g, ""));
+      results = CALCS.filter(calc => (hasArea && calc[0] === "area.html")
+        || (withoutAmount && withoutAmount !== term && matches(withoutAmount, calc)));
+    }
+    const html=GROUPS.map(([k,name])=>{const items=results.filter(c=>c[3]===k);return items.length?`<section class="group"><h2>${name}</h2><div class="grid">${items.map(tileHTML).join("")}</div></section>`:"";}).join("");
     list.innerHTML=html||`<p class="empty">찾는 계산기가 없어요. <a href="contact.html">필요한 계산기를 알려 주세요</a>.</p>`;
   }
   q.parentElement.hidden=false;
