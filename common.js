@@ -72,9 +72,20 @@ const num = id => {
 };
 const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
 const kv = (k, v) => `<div class="kv"><span>${k}</span><b>${v}</b></div>`;
+const EXAMPLE_CALCULATION = '<div class="hint"><strong>예시 계산</strong> · 입력칸에 처음 채워진 값으로 계산했어요.</div>';
+let initialCalculationInputs = null;
+function calculationInputs() {
+  const fields = document.querySelectorAll('main input, main select, main .chips button[aria-pressed="true"]');
+  return JSON.stringify([...fields].filter(field => !field.closest('.result')).map(field => {
+    if (field.type === "checkbox" || field.type === "radio") return field.checked;
+    if (field.tagName === "BUTTON") return field.dataset.v;
+    return field.classList.contains("money") ? field.value.replace(/,/g, "").trim() : field.value;
+  }));
+}
 function show(id, html) {
   const r = document.getElementById(id);
-  r.innerHTML = html;
+  const example = id === "out" && initialCalculationInputs !== null && initialCalculationInputs === calculationInputs();
+  r.innerHTML = (example ? EXAMPLE_CALCULATION : "") + html;
   r.dataset.state = "ready"; r.setAttribute("role", "status");
   r.classList.add("show");
   if (!window.QUIET && r.getBoundingClientRect().top > innerHeight - 120) r.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -129,7 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const run = () => { const a = window.alert; window.alert = () => {}; window.QUIET = true; try { calc(); } catch (e) {} window.QUIET = false; window.alert = a; };
   document.querySelectorAll("main select").forEach(el => el.addEventListener("change", run));
   document.querySelectorAll("main input, main select").forEach(el => el.addEventListener("input", run));
-  setTimeout(run, 0);
+  setTimeout(() => {
+    initialCalculationInputs = calculationInputs();
+    run();
+  }, 0);
 });
 
 // Anonymous page and performance counts; never read form fields or storage.

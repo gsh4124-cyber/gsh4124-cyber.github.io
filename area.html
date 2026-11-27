@@ -10,7 +10,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "평수 계산기", "url": "https://gsh4124-cyber.github.io/area.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "inLanguage": "ko", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "1평은 몇 제곱미터인가요?", "acceptedAnswer": {"@type": "Answer", "text": "1평은 약 3.3058㎡예요. 제곱미터를 평으로 바꿀 때는 0.3025를 곱하면 돼요."}}, {"@type": "Question", "name": "아파트 34평은 전용면적이 얼마인가요?", "acceptedAnswer": {"@type": "Answer", "text": "흔히 말하는 34평은 공급면적 기준이고, 전용면적은 보통 84㎡(약 25.4평)예요. 공급면적은 전용면적에 계단·복도 같은 주거 공용면적을 더한 값이에요."}}, {"@type": "Question", "name": "부동산 광고에는 왜 평 대신 ㎡를 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": "법정 계량 단위가 제곱미터라서 계약서와 광고에는 ㎡를 써야 해요. 평은 이해를 돕는 보조 단위로만 쓰여요."}}]}</script>
 <link rel="stylesheet" href="style.css?v=9">
-<script src="common.js?v=9"></script>
+<script src="common.js?v=10"></script>
 <script src="rec.js?v=1" defer></script>
 </head>
 <body>
@@ -40,7 +40,7 @@
 <script>
 const K=400/121; // 1평 = 400/121 ㎡
 const f=v=>(Math.round(v*100)/100).toLocaleString("ko-KR");
-function convertArea(source) {
+function convertArea(source, example = false) {
   const fromMeters = source.id === "m2";
   const other = document.getElementById(fromMeters ? "py" : "m2");
   const out = document.getElementById("out");
@@ -55,10 +55,10 @@ function convertArea(source) {
   const pyeong = fromMeters ? meters / K : value;
   const converted = fromMeters ? pyeong : meters;
   other.value = Math.round(converted * 100) / 100;
-  out.innerHTML = `<div class="big">${f(meters)}㎡ = ${f(pyeong)}평</div>`;
+  out.innerHTML = (example ? EXAMPLE_CALCULATION : "") + `<div class="big">${f(meters)}㎡ = ${f(pyeong)}평</div>`;
   out.dataset.state = "ready";
 }
-document.addEventListener("DOMContentLoaded",()=>{convertArea(document.getElementById("m2"));
+document.addEventListener("DOMContentLoaded",()=>{convertArea(document.getElementById("m2"), true);
   document.getElementById("tbl").innerHTML+=[33,49,59,74,84,99,114,135].map(m=>`<tr><td>${m}㎡</td><td>${f(m/K)}평</td></tr>`).join("");});
 </script>
 </body>
